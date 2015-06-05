@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
 	"time"
 
@@ -78,12 +79,19 @@ func main() {
 
 		if len(c.Args()) > 0 {
 			url := fmt.Sprint(baseurl, c.Args()[0])
-			sc, json, err := getUrl(user, url)
+			sc, location, json, err := getUrl(user, url)
 			handleError(err)
 
 			if sc == 202 {
-				pollurl, err := parse(json)
-				handleError(err)
+				var pollurl string
+				if location != nil {
+					pollurl = location.String()
+					log(fmt.Sprint("Using location header ", pollurl))
+				} else {
+					pollurl, err = parse(json)
+					handleError(err)
+					log(fmt.Sprint("Using URL from JSON ", pollurl))
+				}
 
 				s := "seconds"
 				if interval == 1 {
@@ -93,7 +101,7 @@ func main() {
 					log(fmt.Sprint("Sleeping ", interval, " ", s, "..."))
 					time.Sleep(time.Second * time.Duration(interval))
 					log(fmt.Sprint("Poll #", (i + 1), "..."))
-					sc, json, err = getUrl(user, pollurl)
+					sc, _, json, err = getUrl(user, pollurl)
 					handleError(err)
 					if sc != 202 {
 						break
@@ -122,7 +130,7 @@ func log(message string) {
 	}
 }
 
-func getUrl(user string, url string) (int, []byte, error) {
+func getUrl(user string, url string) (int, *url.URL, []byte, error) {
 	log(fmt.Sprint("Getting url ", url, " as user ", user))
 
 	client := &http.Client{}
@@ -131,14 +139,16 @@ func getUrl(user string, url string) (int, []byte, error) {
 	req.Header.Add("RemoteUser", user)
 	resp, err := client.Do(req)
 	if err != nil {
-		return 0, nil, err
+		return 0, nil, nil, err
 	}
+
 	defer resp.Body.Close()
 	payload, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return 0, nil, err
+		return 0, nil, nil, err
 	}
-	return resp.StatusCode, payload, nil
+	location, _ := resp.Location()
+	return resp.StatusCode, location, payload, nil
 }
 
 func parse(b []byte) (string, error) {
