@@ -5,6 +5,21 @@
 * Want to learn a little about making HTTP GET requests and parsing JSON in Go
 * Want to make fun of my n00b Go code
 
+## Installation
+
+To install from source, you must install a Go environment [https://golang.org/doc/install](https://golang.org/doc/install), and then type:
+
+```
+$ go get github.com/hoop33/poll
+$ cd $GOPATH/src/github.com/hoop33/poll
+$ go build
+$ go install
+```
+
+Or, you can download a pre-built binary:
+
+* Mac OS X: [https://raw.githubusercontent.com/hoop33/poll/master/bin/macosx/poll](https://raw.githubusercontent.com/hoop33/poll/master/bin/macosx/poll)
+ 
 ## Usage
 
 To get help, run:

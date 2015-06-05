@@ -27,4 +27,4 @@ _testmain.go
 *.prof
 
 # The poll binary
-poll
+./poll
