@@ -19,6 +19,7 @@ $ go install
 Or, you can download a pre-built binary:
 
 * Mac OS X: [https://raw.githubusercontent.com/hoop33/poll/master/bin/macosx/poll](https://raw.githubusercontent.com/hoop33/poll/master/bin/macosx/poll)
+* Windows: [https://raw.githubusercontent.com/hoop33/poll/master/bin/windows/poll.exe](https://raw.githubusercontent.com/hoop33/poll/master/bin/windows/poll.exe)
  
 ## Usage
 

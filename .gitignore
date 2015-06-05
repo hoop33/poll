@@ -22,9 +22,9 @@ _cgo_export.*
 
 _testmain.go
 
-*.exe
 *.test
 *.prof
 
-# The poll binary
+# The poll binaries
 ./poll
+./poll.exe
