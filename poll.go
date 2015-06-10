@@ -108,7 +108,8 @@ func main() {
 					}
 				}
 			}
-			fmt.Println("Status Code:", sc, "\n", string(json))
+      log(fmt.Sprint("Status Code:", sc, "\n"))
+			fmt.Println(string(json))
 		} else {
 			fmt.Println("Missing URL parameter")
 		}
